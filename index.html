@@ -80,11 +80,33 @@
   </div>
 
   <h2 id="login">Login</h2>
-  <div class="form-box">
-    <input type="text" id="user" placeholder="Username">
-    <input type="password" id="pass" placeholder="Password">
-    <button onclick="alert('Welcome ' + document.getElementById('user').value)">Login</button>
-  </div>
+<div class="form-box">
+  <input type="text" id="user" placeholder="Username">
+  <input type="password" id="pass" placeholder="Password">
+  <button onclick="login()">Login</button>
+</div>
+
+<script>
+  function login() {
+    const username = document.getElementById("user").value.trim();
+    const password = document.getElementById("pass").value.trim();
+
+    if (username === "admin" && password === "123") {
+      alert("Welcome " + username);
+      // 👉 If you want redirect after login, uncomment this:
+      // window.location.href = "dashboard.html";
+    } else {
+      alert("Invalid username or password!");
+    }
+  }
+
+  // Optional: allow Enter key to submit login
+  document.getElementById("pass").addEventListener("keypress", function(e) {
+    if (e.key === "Enter") {
+      login();
+    }
+  });
+</script>
 
   <h2 id="support">Support</h2>
   <p>Email us at <b>support@rjcouriers.com</b> or call +91-1234567890</p>
