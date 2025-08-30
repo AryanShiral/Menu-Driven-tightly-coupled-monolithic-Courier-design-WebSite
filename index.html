@@ -15,6 +15,7 @@
     input, textarea, button { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ccc; border-radius: 5px; }
     button { background: #2563eb; color: #fff; border: none; cursor: pointer; }
     button:hover { background: #1e40af; }
+    .hidden { display: none; }
   </style>
 </head>
 <body>
@@ -26,95 +27,99 @@
 
 <nav>
   <a href="#home">Home</a>
-  <a href="#book">Book</a>
-  <a href="#track">Track</a>
-  <a href="#pricing">Pricing</a>
+  <a href="#book" class="nav-protected hidden">Book</a>
+  <a href="#track" class="nav-protected hidden">Track</a>
+  <a href="#pricing" class="nav-protected hidden">Pricing</a>
   <a href="#login">Login</a>
-  <a href="#support">Support</a>
+  <a href="#support" class="nav-protected hidden">Support</a>
 </nav>
 
 <div class="content">
-  <!-- Instead of dynamic switching, ALL sections are stacked -->
-  
+  <!-- Home -->
   <h2 id="home">Welcome to RJCouriers</h2>
   <p>Your trusted partner for nationwide deliveries.</p>
-  <div class="form-box">
-    <h3>Quick Track</h3>
-    <input type="text" id="quickTrackId" placeholder="Enter Tracking ID">
-    <button onclick="document.getElementById('quickTrackResult').innerText = 
-      document.getElementById('quickTrackId').value 
-        ? 'Status: In Transit' 
-        : 'Please enter Tracking ID.';">Track Now</button>
-    <p id="quickTrackResult"></p>
+
+  <!-- Quick Track (hidden until login) -->
+  <div id="quickTrackSection" class="hidden">
+    <div class="form-box">
+      <h3>Quick Track</h3>
+      <input type="text" id="quickTrackId" placeholder="Enter Tracking ID">
+      <button onclick="document.getElementById('quickTrackResult').innerText = 
+        document.getElementById('quickTrackId').value 
+          ? 'Status: In Transit' 
+          : 'Please enter Tracking ID.';">Track Now</button>
+      <p id="quickTrackResult"></p>
+    </div>
   </div>
 
-  <h2 id="book">Book Shipment</h2>
-  <div class="form-box">
-    <input type="text" id="sender" placeholder="Sender Name">
-    <input type="text" id="receiver" placeholder="Receiver Name">
-    <input type="text" id="pickup" placeholder="Pickup Address">
-    <input type="text" id="delivery" placeholder="Delivery Address">
-    <input type="number" id="weight" placeholder="Weight (kg)">
-    <button onclick="alert('Booking Confirmed for ' + document.getElementById('receiver').value)">Submit Booking</button>
-  </div>
-
-  <h2 id="track">Track Shipment</h2>
-  <div class="form-box">
-    <input type="text" id="trackId" placeholder="Enter Tracking ID">
-    <button onclick="document.getElementById('trackResult').innerText = 
-      document.getElementById('trackId').value 
-        ? 'Package Out for Delivery' 
-        : 'Enter a Tracking ID';">Track</button>
-    <p id="trackResult"></p>
-  </div>
-
-  <h2 id="pricing">Pricing Calculator</h2>
-  <div class="form-box">
-    <input type="number" id="calcWeight" placeholder="Weight (kg)">
-    <input type="number" id="distance" placeholder="Distance (km)">
-    <button onclick="document.getElementById('priceResult').innerText = 
-      (document.getElementById('calcWeight').value && document.getElementById('distance').value) 
-        ? 'Estimated Price: ₹' + ((document.getElementById('calcWeight').value * 10) + (document.getElementById('distance').value * 2)) 
-        : 'Enter weight & distance';">Calculate</button>
-    <p id="priceResult"></p>
-  </div>
-
+  <!-- Login -->
   <h2 id="login">Login</h2>
-<div class="form-box">
-  <input type="text" id="user" placeholder="Username">
-  <input type="password" id="pass" placeholder="Password">
-  <button onclick="login()">Login</button>
+  <div class="form-box">
+    <input type="text" id="user" placeholder="Username">
+    <input type="password" id="pass" placeholder="Password">
+    <button onclick="login()">Login</button>
+    <p id="loginResult"></p>
+  </div>
+
+  <!-- Protected Sections -->
+  <div id="protectedSections" class="hidden">
+    <h2 id="book">Book Shipment</h2>
+    <div class="form-box">
+      <input type="text" id="sender" placeholder="Sender Name">
+      <input type="text" id="receiver" placeholder="Receiver Name">
+      <input type="text" id="pickup" placeholder="Pickup Address">
+      <input type="text" id="delivery" placeholder="Delivery Address">
+      <input type="number" id="weight" placeholder="Weight (kg)">
+      <button onclick="alert('Booking Confirmed for ' + document.getElementById('receiver').value)">Submit Booking</button>
+    </div>
+
+    <h2 id="track">Track Shipment</h2>
+    <div class="form-box">
+      <input type="text" id="trackId" placeholder="Enter Tracking ID">
+      <button onclick="document.getElementById('trackResult').innerText = 
+        document.getElementById('trackId').value 
+          ? 'Package Out for Delivery' 
+          : 'Enter a Tracking ID';">Track</button>
+      <p id="trackResult"></p>
+    </div>
+
+    <h2 id="pricing">Pricing Calculator</h2>
+    <div class="form-box">
+      <input type="number" id="calcWeight" placeholder="Weight (kg)">
+      <input type="number" id="distance" placeholder="Distance (km)">
+      <button onclick="document.getElementById('priceResult').innerText = 
+        (document.getElementById('calcWeight').value && document.getElementById('distance').value) 
+          ? 'Estimated Price: ₹' + ((document.getElementById('calcWeight').value * 10) + (document.getElementById('distance').value * 2)) 
+          : 'Enter weight & distance';">Calculate</button>
+      <p id="priceResult"></p>
+    </div>
+
+    <h2 id="support">Support</h2>
+    <p>Email us at <b>support@rjcouriers.com</b> or call +91-1234567890</p>
+    <div class="form-box">
+      <textarea id="query" placeholder="Enter your query" rows="4"></textarea>
+      <button onclick="alert('Your query has been submitted: ' + document.getElementById('query').value)">Submit</button>
+    </div>
+  </div>
 </div>
 
 <script>
-  function login() {
-    const username = document.getElementById("user").value.trim();
-    const password = document.getElementById("pass").value.trim();
+function login() {
+  const username = document.getElementById("user").value.trim();
+  const password = document.getElementById("pass").value.trim();
 
-    if (username === "admin" && password === "123") {
-      alert("Welcome " + username);
-      // 👉 If you want redirect after login, uncomment this:
-      // window.location.href = "dashboard.html";
-    } else {
-      alert("Invalid username or password!");
-    }
+  if (username === "admin" && password === "123") {
+    document.getElementById("loginResult").innerText = "✅ Welcome " + username;
+    document.getElementById("protectedSections").classList.remove("hidden");
+    document.getElementById("quickTrackSection").classList.remove("hidden");
+
+    // show nav links
+    document.querySelectorAll(".nav-protected").forEach(el => el.classList.remove("hidden"));
+  } else {
+    document.getElementById("loginResult").innerText = "❌ Invalid username or password!";
   }
-
-  // Optional: allow Enter key to submit login
-  document.getElementById("pass").addEventListener("keypress", function(e) {
-    if (e.key === "Enter") {
-      login();
-    }
-  });
+}
 </script>
-
-  <h2 id="support">Support</h2>
-  <p>Email us at <b>support@rjcouriers.com</b> or call +91-1234567890</p>
-  <div class="form-box">
-    <textarea id="query" placeholder="Enter your query" rows="4"></textarea>
-    <button onclick="alert('Your query has been submitted: ' + document.getElementById('query').value)">Submit</button>
-  </div>
-</div>
 
 </body>
 </html>
